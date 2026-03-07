@@ -1,9 +1,12 @@
+server:
+  port: ${PORT:8080}
+
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://${PGHOST}:${PGPORT:5432}/${PGDATABASE:wallet-management}}
+    url: ${DB_URL}
     driver-class-name: org.postgresql.Driver
-    username: ${SPRING_DATASOURCE_USERNAME:${PGUSER:}}
-    password: ${SPRING_DATASOURCE_PASSWORD:${PGPASSWORD:}}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -18,3 +21,7 @@ springdoc:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
+
+app:
+  cors:
+    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:5173,https://gaizzzzz.github.io}
