@@ -12,5 +12,10 @@ public interface WalletTransactionRepository extends JpaRepository<WalletTransac
             LocalDateTime end
     );
 
+    List<WalletTransaction> findTop10ByOccurredAtGreaterThanEqualAndOccurredAtLessThanOrderByOccurredAtDescIdDesc(
+            LocalDateTime start,
+            LocalDateTime end
+    );
+
     List<WalletTransaction> findTop10ByOrderByOccurredAtDescIdDesc();
 }

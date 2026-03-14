@@ -30,7 +30,7 @@ public class DashboardController {
     }
 
     @GetMapping("/heatmap")
-    @Operation(summary = "Daily heatmap points (income/expense/total/count)")
+    @Operation(summary = "Daily expense totals for heatmap")
     public List<HeatmapPointResponse> heatmap(@RequestParam String month) {
         return dashboardService.getHeatmap(month);
     }
@@ -41,3 +41,4 @@ public class DashboardController {
         return dashboardService.getTopExpenseCategories(month);
     }
 }
+

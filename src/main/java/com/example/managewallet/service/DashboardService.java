@@ -50,6 +50,7 @@ public class DashboardService {
         Map<LocalDate, List<WalletTransaction>> grouped = new LinkedHashMap<>();
 
         monthTransactions.stream()
+                .filter(tx -> tx.getFlow() == FlowType.EXPENSE)
                 .sorted(Comparator.comparing(WalletTransaction::getOccurredAt))
                 .forEach(tx -> grouped.computeIfAbsent(tx.getOccurredAt().toLocalDate(), ignored -> new ArrayList<>()).add(tx));
 
@@ -116,3 +117,4 @@ public class DashboardService {
         return normalized.isEmpty() ? "Other" : normalized;
     }
 }
+

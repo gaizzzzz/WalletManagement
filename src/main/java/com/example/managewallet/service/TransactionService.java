@@ -7,6 +7,7 @@ import com.example.managewallet.dto.CreateTransactionRequest;
 import com.example.managewallet.dto.TransactionResponse;
 import com.example.managewallet.exception.NotFoundException;
 import com.example.managewallet.repository.WalletTransactionRepository;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,9 +55,23 @@ public class TransactionService {
     public List<TransactionResponse> listByMonth(String month) {
         MonthWindow monthWindow = MonthRangeParser.parse(month);
         return transactionRepository
-                .findByOccurredAtGreaterThanEqualAndOccurredAtLessThanOrderByOccurredAtDescIdDesc(
+                .findTop10ByOccurredAtGreaterThanEqualAndOccurredAtLessThanOrderByOccurredAtDescIdDesc(
                         monthWindow.start(),
                         monthWindow.end()
+                )
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<TransactionResponse> listByDateRange(String startDate, String endDate) {
+        LocalDateTime start = LocalDateTime.parse(startDate + "T00:00:00");
+        LocalDateTime end = LocalDateTime.parse(endDate + "T23:59:59");
+        return transactionRepository
+                .findTop10ByOccurredAtGreaterThanEqualAndOccurredAtLessThanOrderByOccurredAtDescIdDesc(
+                        start,
+                        end
                 )
                 .stream()
                 .map(this::toResponse)

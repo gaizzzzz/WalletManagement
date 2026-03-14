@@ -44,9 +44,18 @@ public class TransactionController {
     }
 
     @GetMapping
-    @Operation(summary = "List transactions by month (yyyy-MM)")
-    public List<TransactionResponse> listByMonth(@RequestParam String month) {
-        return transactionService.listByMonth(month);
+    @Operation(summary = "List transactions by month (yyyy-MM) or date range, limited to 10 most recent")
+    public List<TransactionResponse> listTransactions(
+            @RequestParam(required = false) String month,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate) {
+        if (month != null) {
+            return transactionService.listByMonth(month);
+        } else if (startDate != null && endDate != null) {
+            return transactionService.listByDateRange(startDate, endDate);
+        } else {
+            return transactionService.recentTransactions();
+        }
     }
 
     @GetMapping("/recent")
